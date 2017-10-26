@@ -5,10 +5,10 @@ https://collegescorecard.ed.gov/data/
 Use fread from data.read table in R
 Income after graduation, look at info differences relative to input (of before coming into college)
 Format
-Rmarkdown, html, pdf report
-Guide for weighting it
-Post-processed data file
-Reproducible from info in the folder
+  Rmarkdown, html, pdf report
+  Guide for weighting it
+  Post-processed data file
+  Reproducible from info in the folder
 
 
 # Variables
