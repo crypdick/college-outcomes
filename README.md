@@ -69,5 +69,9 @@ Is there a relationship between earnings and withdraw rates?
 
 Compare average net price for different family income groups. (Who pays more for school)
 
+What's the relationship between major and earnings?
 
+Ask questions where we manipulate data (not a perfect x or y variable) combination of variables.
+
+Heap Map 
 
