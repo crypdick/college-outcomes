@@ -42,13 +42,14 @@ which looks like c("ACS", "16", "1YR", "S0801")
 we can pull out the year 16 from the array  
 ```{r}
 extract_yr_from_fname <- function(fname) {
-  l <- length(fname)
-  return(fname[l-1:l-10])
-  # 10
-  # #x <- strsplit(fname, "_")
-  # y <- x[[1]][entity_requested]
-  # return(y)
+  l <- nchar(fname)
+  print(l)
+  start <- l-13
+  end <- l-10
+  year <- substr(fname, start, end)
+  return(year)
 }
+lapply(my.subset, extract_yr_from_fname)
 ```
 
 
@@ -63,13 +64,13 @@ read_my_files <- function(filename){
     
     # obtain the path, which has the year in filename
     # append col called filename to x
-    print(extract_yr_from_fname(filename))
       x <- mutate(x, Filename=extract_yr_from_fname(filename))
       return(x)
 }
 
 # sends filenames to file reader func
 combined <- map_df(my.subset, read_my_files)
+#lapply(my.subset, read_my_files)
 #View(combined)
 ```
 
