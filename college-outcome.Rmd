@@ -9,10 +9,32 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#file_names
+Step 0: Read libraries  
+```{r}
 library(tidyverse)
 library(purrr)
 library(data.table)
+```
+
+Step 1: Set working directory  
+```{r}
+my_path <- "/Users/fanny/Google Drive/munge/college-outcomes"
+setwd(my_path)
+```
+
+
+Step 2: Generate a list of files to be read in  
+```{r}
+files <- list.files("my_path", pattern="*.csv", full.names=TRUE) 
+files
+```
+
+
+
+
+
+```{r}
+
 
 read_my_files <- function(filename){
   x <- fread(filename, skip=1)
@@ -21,3 +43,7 @@ read_my_files <- function(filename){
 }
 
 combined <- map_df(file_names,read_my_files)
+
+```
+
+#file_names
