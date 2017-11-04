@@ -19,6 +19,10 @@ data1996 <- read.delim(file.path(project.dir,"/MERGED1996_97_PP.csv"), na.string
 
 data1996 <- data.frame(data1996)
 
+data2009 <- read.delim(file.path(project.dir,"/MERGED2009_10_PP.csv"), na.strings=c("NULL"), header=TRUE,sep=",")  
+
+data2009 <- data.frame(data2009)
+
 data2014 <- read.delim(file.path(project.dir,"/MERGED2014_15_PP.csv"), na.strings=c("NULL"), header=TRUE,sep=",")  
 
 data2014 <- data.frame(data2014)
@@ -41,14 +45,16 @@ my_function <- function(frame){
 }
 
 ratio_1996 <- (my_function(data1996))
+ratio_2009 <- (my_function(data2009))
 ratio_2014 <- (my_function(data2014))
 
 ```
 
 ```{r}
-B <- matrix(c(ratio_1996,ratio_2014), nrow=2,ncol=1777)
+B <- matrix(c(ratio_1996,ratio_2009,ratio_2014), nrow=3,ncol=1777)
 B1 <- t(B)
-head(B1)
+colnames(B1) <- c("1996","2009","2014")
+#head(B1)
 dater <- data.matrix(B1)
 nba_heatmap <- heatmap(dater, Rowv=NA, Colv=NA, col = heat.colors(256), scale="column", margins=c(5,10))
 
