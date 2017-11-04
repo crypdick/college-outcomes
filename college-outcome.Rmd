@@ -67,7 +67,12 @@ View(combined)
 ```
 
 
-Step 4: Clean data & only keep variables of interest  
+Step 4: Clean data & only keep variables of interest 
+
+## YOU CAN FILTER WHATEVER YOU WANT OUT OF THE DATA FRAME BY PUTTING
+YOUR PARAMTERS INTO SELECT   
+
+select(starts_with"blah blah text of innerest")
 ```{r}
 processed_frame <- combined %>%
   mutate(year = map_chr(Filename, strsplit_that_works, 2)) %>% 
