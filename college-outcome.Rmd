@@ -69,15 +69,24 @@ View(combined)
 
 Step 4: Clean data & only keep variables of interest 
 
+obtain the year from the name of the csv file and save it into a variable called year  
+
 ## YOU CAN FILTER WHATEVER YOU WANT OUT OF THE DATA FRAME BY PUTTING
 YOUR PARAMTERS INTO SELECT   
 
 select(starts_with"blah blah text of innerest")
+
+like say I wanted to select the column variable named institutiotion 
+I would put the select function 
+select(INSTNM)
 ```{r}
 processed_frame <- combined %>%
   mutate(year = map_chr(Filename, strsplit_that_works, 2)) %>% 
-  select(-starts_with("HC02")) %>% 
-  select(-starts_with("HC03"))
+  
+  # add your filtering / desired columns
+  select(starts_with("INSTNM"))
+  #select(-starts_with("HC02")) %>% 
+  #select(-starts_with("HC03"))
 #View(processed_frame)
 ```
 
