@@ -18,32 +18,52 @@ library(data.table)
 
 Step 1: Set working directory  
 ```{r}
-my_path <- "/Users/fanny/Google Drive/munge/college-outcomes"
-setwd(my_path)
+project.dir <- "/Users/fanny/Google Drive/munge/college-outcomes"
+setwd(project.dir)
+dataset.dir <- "Datasets"
+outputs.dir <- "Output"
 ```
 
 
 Step 2: Generate a list of files to be read in  
 ```{r}
-files <- list.files("my_path", pattern="*.csv", full.names=TRUE) 
-files
+file_names <- list.files(file.path(project.dir, dataset.dir), pattern="*.csv", full.names=TRUE) 
+my.subset <- file_names[5:6]
+my.subset
 ```
 
+Step 3: Read in files and combine  
 
-
-
+The file reads in missing data as "NA", so we will coerce those entries into NA's.  
 
 ```{r}
-
-
 read_my_files <- function(filename){
-  x <- fread(filename, skip=1)
-  return(x)
-
+    x <- fread(filename, skip=0, na.strings = c("NULL"))
+    
+    # obtain the path, which has the year in filename
+      x <- mutate(x, Filename=sub(project.dir, "", filename))
+      return(x)
 }
 
-combined <- map_df(file_names,read_my_files)
-
+combined <- map_df(my.subset, read_my_files)
+View(combined)
 ```
 
-#file_names
+
+
+Step 4: Clean data & only keep variables of interest  
+```{r}
+processed_frame <- combined %>%
+  mutate(year = map_chr(Filename, strsplit_that_works, 2)) %>% 
+  select(-starts_with("HC02")) %>% 
+  select(-starts_with("HC03"))
+#View(processed_frame)
+```
+
+
+Step 7: Write the desired dataframe into csv  
+```{r}
+write_csv(processed_frame, "processed_college_outcomes.csv")
+```
+
+
