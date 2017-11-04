@@ -11,16 +11,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Step 0: Read libraries  
 ```{r}
-library(tidyverse)
+library(dplyr)
 library(purrr)
 library(data.table)
 ```
 
 Step 1: Set working directory  
 ```{r}
-project.dir <- "/Users/fanny/Google Drive/munge/college-outcomes"
+# double check that this puts you in the right dir
+project.dir <- getwd()
 setwd(project.dir)
-dataset.dir <- "Datasets"
+dataset.dir <- "Data"
 outputs.dir <- "Output"
 ```
 
@@ -28,22 +29,25 @@ outputs.dir <- "Output"
 Step 2: Generate a list of files to be read in  
 ```{r}
 file_names <- list.files(file.path(project.dir, dataset.dir), pattern="*.csv", full.names=TRUE) 
-my.subset <- file_names[1:2]
+my.subset <- file_names[19:20]
 my.subset
 ```
 
 
 Step 3: Create function for reading in filename string
-split on the underscore (_)  
+split on the underscore (_)
 For example:
 create array from filename "ACS_16_1YR_S0801"
 which looks like c("ACS", "16", "1YR", "S0801")
 we can pull out the year 16 from the array  
 ```{r}
-strsplit_that_works <- function(cell, entity_requested) {
-  x <- strsplit(cell, "_")
-  y <- x[[1]][entity_requested]
-  return(y)
+extract_yr_from_fname <- function(fname) {
+  l <- length(fname)
+  return(fname[l-1:l-10])
+  # 10
+  # #x <- strsplit(fname, "_")
+  # y <- x[[1]][entity_requested]
+  # return(y)
 }
 ```
 
@@ -58,12 +62,15 @@ read_my_files <- function(filename){
     x <- fread(filename, skip=0, na.strings = c("NULL"))
     
     # obtain the path, which has the year in filename
-      x <- mutate(x, Filename=sub(project.dir, "", filename))
+    # append col called filename to x
+    print(extract_yr_from_fname(filename))
+      x <- mutate(x, Filename=extract_yr_from_fname(filename))
       return(x)
 }
 
+# sends filenames to file reader func
 combined <- map_df(my.subset, read_my_files)
-View(combined)
+#View(combined)
 ```
 
 
@@ -80,14 +87,16 @@ like say I wanted to select the column variable named institutiotion
 I would put the select function 
 select(INSTNM)
 ```{r}
-processed_frame <- combined %>%
-  mutate(year = map_chr(Filename, strsplit_that_works, 2)) %>% 
+# cleaning the combined tables
+#processed_frame <- combined %>%
+ # mutate(year = map_chr(Filename, extract_yr_from_fname, 2)) #%>% 
   
   # add your filtering / desired columns
-  select(starts_with("INSTNM"))
+ # select(starts_with("INSTNM"))
   #select(-starts_with("HC02")) %>% 
   #select(-starts_with("HC03"))
 #View(processed_frame)
+select(processed_frame, starts_with("year"))
 ```
 
 
