@@ -1,0 +1,113 @@
+---
+title: "EDA Project"
+author: "Stephanie Rivera"
+date: "11/4/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Check to see the ratio of missing data in a file
+```{r, eval=TRUE}
+  
+  # getwd()
+  project.dir <- "/Users/srive326/Desktop/CollegeScorecard_Raw_Data"
+
+#read in file
+data1996 <- read.delim(file.path(project.dir,"/MERGED1996_97_PP.csv"), na.strings=c("NULL",""), header=TRUE,sep=",")  
+
+data1996 <- data.frame(data1996)
+
+data2009 <- read.delim(file.path(project.dir,"/MERGED2009_10_PP.csv"), na.strings=c("NULL",""), header=TRUE,sep=",")  
+
+data2009 <- data.frame(data2009)
+
+data2014 <- read.delim(file.path(project.dir,"/MERGED2014_15_PP.csv"), na.strings=c("NULL",""), header=TRUE,sep=",")  
+
+data2014 <- data.frame(data2014)
+
+
+```
+
+Create function and pass in data to compute ratio
+
+```{r}
+
+my_function <- function(frame){
+  
+  for (i in 1:ncol(frame)){
+  
+  ratiomissing[i] <- sum(is.na(frame[,i]))/length(frame[,i])
+  
+  }
+  return(ratiomissing)
+}
+
+ratio_1996 <- (my_function(data1996))
+ratio_2009 <- (my_function(data2009))
+ratio_2014 <- (my_function(data2014))
+
+(ratio_2009)
+```
+
+```{r}
+B <- matrix(c(ratio_1996,ratio_2009,ratio_2014), nrow=3,ncol=1777)
+B1 <- t(B)
+colnames(B1) <- c("1996","2009","2014")
+#head(B1)
+dater <- data.matrix(B1)
+nba_heatmap <- heatmap(dater, Rowv=NA, Colv=NA, col = heat.colors(256), scale="column", margins=c(5,10))
+
+```
+
+```{r}
+my_function2 <- function(frame){
+  
+  for (i in 1:ncol(frame)){
+    num_na <- sum(is.na(frame[,i]))
+    total_rows <- length(frame[,i])
+    ratiomissing <- num_na/total_rows
+    cat("\n nas", num_na, "rows", total_rows, "ratio", ratiomissing)
+    if (ratiomissing > .99){
+      #cat('Ratio of missing data from column', i, 'is',ratiomissing, 'consider rejecting column.','\n')
+      print("this col should be accepted")
+      nan_col_names[i] <- colnames(frame)[i]
+      
+    }
+    #else cat('Ratio of missing data from column', i, #'is',ratiomissing, '\n')
+    
+  }
+  #cat('\n','The different data types in your data frame are:')
+  #(table(unlist(lapply(frame, class))))
+  
+  return(values)
+}
+
+my_function2(data2009[,1:15])
+#values3 <- matrix(my_function2(data2009[,1:15]))
+#(values3)
+#sum(is.na(values3))
+
+```
+
+```{r}
+na.max <- .2
+na.prop <- apply(data2009, 2, function(x) sum(is.na(x)/length(x)))
+#na.prop
+
+(sum(na.prop < na.max)/length(data2009))
+
+na.prop2 <- apply(data1996, 2, function(x) sum(is.na(x)/length(x)))
+#na.prop2
+
+(sum(na.prop2 < na.max)/length(data1996))
+
+na.prop3 <- apply(data2014, 2, function(x) sum(is.na(x)/length(x)))
+#na.prop3
+
+(sum(na.prop3 < na.max)/length(data2014))
+```
+
+
+
