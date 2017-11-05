@@ -109,7 +109,7 @@ filter_NA_cols <- function(dtable){
 
 d2013 <- filter_NA_cols(d2013)
 
-(calc_completeness_percent(d2013))
+(calc_perc_goodcols_in_table(d2013))
 ```
 
 ## Clean data & only keep variables of interest 
