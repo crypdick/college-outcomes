@@ -137,6 +137,7 @@ select(INSTNM)
   #select(-starts_with("HC03"))
 #View(processed_frame)
 #select(processed_frame, starts_with("year"))
+ncf_row <- d2013 %>% filter(INSTNM == "New College of Florida")
 ```
 
 
