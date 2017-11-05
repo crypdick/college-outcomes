@@ -1,6 +1,7 @@
 ---
 title: "College Outcomes Analysis"
-author: "Richard Decal"
+author: "Stephaine Rivera, Richard Decal, Fanny Chow, Xiaotai Chai"
+subtitle: "Data Munging & EDA"
 date: "October 26, 2017"
 output: html_document
 ---
