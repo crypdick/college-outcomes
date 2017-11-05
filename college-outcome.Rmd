@@ -67,6 +67,32 @@ fname_to_dtable <- function(filename){
 #View(combined)
 ```
 
+Measuring completeness of each year
+```{r}
+
+calc_completeness_percent <- function(dtable){
+    na.max <- .2
+    na.prop <- apply(dtable, 2, function(x) sum(is.na(x)/length(x)))
+    percent_good <- (sum(na.prop < na.max)/length(dtable))
+    return(percent_good)
+}
+
+
+score_fname_list <- function(fname_list){
+    scores <- []
+    for (i in 1:length(fname_list)){
+        f <- fname_list[i]
+        tab <- fname_to_dtable(f)
+        score <- calc_completeness_percent(tab)
+        cat("yr", extract_yr_from_fname(f), "score", score)
+        scores[i] <- score
+  }
+  return(scores)
+}
+file_scores <- score_fname_list(fname_list = file_names)
+```
+
+
 
 Step 4: Clean data & only keep variables of interest 
 
