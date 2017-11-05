@@ -29,8 +29,6 @@ outputs.dir <- "Output"
 ## Generate a list of files to be read in  
 ```{r}
 file_names <- list.files(file.path(project.dir, dataset.dir), pattern="*.csv", full.names=TRUE) 
-#my.subset <- file_names[19:20]
-#my.subset
 ```
 
 
@@ -70,7 +68,6 @@ fname_to_dtable <- function(filename){
 ## Measuring completeness of each year
 
 ```{r}
-
 calc_perc_goodcols_in_table <- function(dtable){
     na.max <- .2
     na.prop <- apply(dtable, 2, function(x) sum(is.na(x)/length(x)))
@@ -78,20 +75,19 @@ calc_perc_goodcols_in_table <- function(dtable){
     return(percent_good)
 }
 
-
 score_fname_list <- function(fname_list){
     scores <- c()
     for (i in 1:length(fname_list)){
         f <- fname_list[i]
         tab <- fname_to_dtable(f)
-        score <- calc_completeness_percent(tab)
+        score <- calc_perc_goodcols_in_table(tab)
         cat("\n yr", extract_yr_from_fname(f), "score", score)
         scores[i] <- score
   }
   return(scores)
 }
-file_scores <- score_fname_list(fname_list = file_names)
 
+file_scores <- score_fname_list(fname_list = file_names)
 cat("the best year is", max(file_scores))
 ```
 The year 2013 is the best year in terms of % of total columns which have at most 20% NA values.
@@ -104,7 +100,6 @@ d2013 <- fname_to_dtable(file_names[18])
 
 ## Calculating column-wise NA percent
 ```{r}
-
 filter_NA_cols <- function(dtable){
     na.max <- .2
     na.prop <- apply(dtable, 2, function(x) sum(is.na(x)/length(x)))
@@ -141,9 +136,7 @@ select(processed_frame, starts_with("year"))
 ```
 
 
-Step 7: Write the desired dataframe into csv  
+## Write the desired dataframe into csv  
 ```{r}
 write_csv(processed_frame, "processed_college_outcomes.csv")
 ```
-
-
