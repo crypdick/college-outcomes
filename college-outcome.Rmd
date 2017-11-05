@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Load libraries  
 ```{r}
-library(dplyr)
+library(tidyverse)
 library(purrr)
 library(data.table)
 ```
@@ -110,6 +110,9 @@ filter_NA_cols <- function(dtable){
 d2013 <- filter_NA_cols(d2013)
 
 (calc_perc_goodcols_in_table(d2013))
+
+# optionally, save a snapshot of the filtered 2013 dtable
+#write_csv(d2013, "filtered_2013.csv")
 ```
 
 ## Clean data & only keep variables of interest 
@@ -132,11 +135,11 @@ select(INSTNM)
   #select(-starts_with("HC02")) %>% 
   #select(-starts_with("HC03"))
 #View(processed_frame)
-select(processed_frame, starts_with("year"))
+#select(processed_frame, starts_with("year"))
 ```
 
 
 ## Write the desired dataframe into csv  
 ```{r}
-write_csv(processed_frame, "processed_college_outcomes.csv")
+#write_csv(d2013, "filtered_2013.csv")
 ```
