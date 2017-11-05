@@ -9,14 +9,14 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Step 0: Read libraries  
+## Load libraries  
 ```{r}
 library(dplyr)
 library(purrr)
 library(data.table)
 ```
 
-Step 1: Set working directory  
+## Set working directory  
 ```{r}
 # double check that this puts you in the right dir
 project.dir <- getwd()
@@ -26,7 +26,7 @@ outputs.dir <- "Output"
 ```
 
 
-Step 2: Generate a list of files to be read in  
+## Generate a list of files to be read in  
 ```{r}
 file_names <- list.files(file.path(project.dir, dataset.dir), pattern="*.csv", full.names=TRUE) 
 #my.subset <- file_names[19:20]
@@ -34,7 +34,7 @@ file_names <- list.files(file.path(project.dir, dataset.dir), pattern="*.csv", f
 ```
 
 
-Step 3: Create function for reading in filename string
+## Create function for reading in filename string
 ```{r}
 extract_yr_from_fname <- function(fname) {
   l <- nchar(fname)
@@ -48,7 +48,7 @@ file_years <- lapply(file_names, extract_yr_from_fname)
 
 
 
-Step 4: Read in files and combine
+## Read in files and combine
 
 The file reads in missing data as "NA", so we will coerce those entries into NA's.  
 
@@ -67,7 +67,8 @@ fname_to_dtable <- function(filename){
 #View(combined)
 ```
 
-Measuring completeness of each year
+## Measuring completeness of each year
+
 ```{r}
 
 calc_completeness_percent <- function(dtable){
@@ -79,22 +80,45 @@ calc_completeness_percent <- function(dtable){
 
 
 score_fname_list <- function(fname_list){
-    scores <- []
+    scores <- c()
     for (i in 1:length(fname_list)){
         f <- fname_list[i]
         tab <- fname_to_dtable(f)
         score <- calc_completeness_percent(tab)
-        cat("yr", extract_yr_from_fname(f), "score", score)
+        cat("\n yr", extract_yr_from_fname(f), "score", score)
         scores[i] <- score
   }
   return(scores)
 }
 file_scores <- score_fname_list(fname_list = file_names)
+
+cat("the best year is", max(file_scores))
+```
+The year 2013 is the best year in terms of % of total columns which have at most 20% NA values.
+
+## Loading 2013 values to table
+```{r}
+d2013 <- fname_to_dtable(file_names[18])
 ```
 
 
+## Calculating column-wise NA percent
+```{r}
+columwise_NA_percent <- function(frame){
+  percent_missing <- c()
+  for (i in 1:ncol(frame)){
+  
+  percent_missing[i] <- sum(is.na(frame[,i]))/length(frame[,i])
+  
+  }
+  return(percent_missing)
+}
 
-Step 4: Clean data & only keep variables of interest 
+
+
+```
+
+## Clean data & only keep variables of interest 
 
 ## YOU CAN FILTER WHATEVER YOU WANT OUT OF THE DATA FRAME BY PUTTING
 YOUR PARAMTERS INTO SELECT   
