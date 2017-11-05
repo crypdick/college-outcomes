@@ -1,7 +1,10 @@
 # given a table, calculate the percent of columns which have more
 # NA values than a threshold
 
-data1996 <- read.delim(file.path(project.dir,"/MERGED1996_97_PP.csv"), na.strings=c("NULL",""), header=TRUE,sep=",") 
+
+project.dir <- getwd()
+  
+data1996 <- read.delim(file.path(project.dir,"Data/MERGED1996_97_PP.csv"), na.strings=c("NULL",""), header=TRUE,sep=",") 
 
 
 na.max <- .2
