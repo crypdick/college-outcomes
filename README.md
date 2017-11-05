@@ -2,6 +2,8 @@
 
 # Data
 https://collegescorecard.ed.gov/data/
+Official report: [Using Federal Data to Measure and Improve the Performance of US Institutions](https://collegescorecard.ed.gov/assets/UsingFederalDataToMeasureAndImprovePerformance.pdf)
+See also: the dictionary in the Data/ folder
 
 Use fread from data.read table in R
 
