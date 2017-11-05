@@ -71,7 +71,7 @@ fname_to_dtable <- function(filename){
 
 ```{r}
 
-calc_completeness_percent <- function(dtable){
+calc_perc_goodcols_in_table <- function(dtable){
     na.max <- .2
     na.prop <- apply(dtable, 2, function(x) sum(is.na(x)/length(x)))
     percent_good <- (sum(na.prop < na.max)/length(dtable))
@@ -104,18 +104,17 @@ d2013 <- fname_to_dtable(file_names[18])
 
 ## Calculating column-wise NA percent
 ```{r}
-columwise_NA_percent <- function(frame){
-  percent_missing <- c()
-  for (i in 1:ncol(frame)){
-  
-  percent_missing[i] <- sum(is.na(frame[,i]))/length(frame[,i])
-  
-  }
-  return(percent_missing)
+
+filter_NA_cols <- function(dtable){
+    na.max <- .2
+    na.prop <- apply(dtable, 2, function(x) sum(is.na(x)/length(x)))
+    good_cols <- na.prop < na.max
+    return(dtable[,good_cols])
 }
 
+d2013 <- filter_NA_cols(d2013)
 
-
+(calc_completeness_percent(d2013))
 ```
 
 ## Clean data & only keep variables of interest 
