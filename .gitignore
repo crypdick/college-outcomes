@@ -1,4 +1,6 @@
+*.pdf
 *.csv
+*.xlsx
 # History files
 .Rhistory
 .Rapp.history
