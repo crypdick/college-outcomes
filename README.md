@@ -63,15 +63,16 @@ First-generation students or not
 
 
 # Questions
-Who transfers more, men or women?
+Who completed within 4 years at original institution, men or women 
+FEMALE_COMP_ORIG_YR4_RT
+MALE_COMP_ORIG_YR4_RT
 
-Is there a relationship between loans and income? 
 
-Is there a relationship between earnings and withdraw rates?
+Compare ncf to other colleges
 
-Compare average net price for different family income groups. (Who pays more for school)
 
-What's the relationship between major and earnings?
+Compare average net price for different family income groups. (Who pays more for school) (net price for institutions? ~ Income level for students' family)
+**NULL data**
 
 Ask questions where we manipulate data (not a perfect x or y variable) combination of variables.
 
