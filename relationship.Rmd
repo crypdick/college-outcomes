@@ -155,16 +155,19 @@ loan_principal <-  as.data.frame(mutate(loan_principal, Feature="loan_principal"
 loan_principal$School[which(loan_principal$School != "New College of Florida")] = "Other schools"
 ggplot(loan_principal, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
 ```
+
 Way lower loan principal!
 
 
 
 ```{r}
-# 
-mid_SAT_math <- outcomes2013[,c("INSTNM","SATMTMID")]
-colnames(mid_SAT_math) <- c("School", "Value")
-mid_SAT_math <-  as.data.frame(mutate(mid_SAT_math, Feature="mid_SAT_math"))
-mid_SAT_math$School[which(mid_SAT_math$School != "New College of Florida")] = "Other schools"
-ggplot(mid_SAT_math, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
+# 3 yr cohort default rate
+default_rate <- outcomes2013[,c("INSTNM","CDR3")]
+colnames(default_rate) <- c("School", "Value")
+default_rate <-  as.data.frame(mutate(default_rate, Feature="default_rate"))
+default_rate$School[which(default_rate$School != "New College of Florida")] = "Other schools"
+ggplot(default_rate, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
 ```
+
+I thought we'd have higher because we're communist hippies, but we are in the lower tail
 
