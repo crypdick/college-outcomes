@@ -58,7 +58,7 @@ mydata
 # test verion of what's below
 ```{r}
 ncf <- outcomes2013[outcomes2013$INSTNM == "New College of Florida",]
-ncf
+#ncf
 ```
 
 
@@ -80,13 +80,13 @@ percnt_older_than_25yr <- outcomes2013[,c("INSTNM","UG25ABV")]
 colnames(percnt_older_than_25yr) <- c("School", "Value")
 percnt_older_than_25yr <- as.data.frame(mutate(percnt_older_than_25yr, Feature="Percnt_older_than_25yr"))
 
-Avg_fam_income <- outcomes2013[, c("INSTNM","FAMINC")]
-colnames(Avg_fam_income) <- c("School", "Value")
-Avg_fam_income <- as.data.frame(mutate(Avg_fam_income, Feature="Avg_fam_income"))
+# Avg_fam_income <- outcomes2013[, c("INSTNM","FAMINC")]
+# colnames(Avg_fam_income) <- c("School", "Value")
+# Avg_fam_income <- as.data.frame(mutate(Avg_fam_income, Feature="Avg_fam_income"))
 
-mean_income_graduates_after_8yr <- outcomes2013[, c("INSTNM","MN_EARN_WNE_P8")]
-colnames(mean_income_graduates_after_8yr) <- c("School", "Value")
-mean_income_graduates_after_8yr <- as.data.frame(mutate(mean_income_graduates_after_8yr, Feature="Mean_income_graduates_after_8yr"))
+# mean_income_graduates_after_8yr <- outcomes2013[, c("INSTNM","MN_EARN_WNE_P8")]
+# colnames(mean_income_graduates_after_8yr) <- c("School", "Value")
+# mean_income_graduates_after_8yr <- as.data.frame(mutate(mean_income_graduates_after_8yr, Feature="Mean_income_graduates_after_8yr"))
 
 #Share of students earning over $25,000/year (threshold earnings) 8 years after entry
 perc_graduates_earning_grtrthn25k_peryer <- outcomes2013[,c("INSTNM","GT_25K_P8")]
@@ -123,10 +123,4 @@ ggplot(aes(y=Value, x=Feature, fill=School), data=melted_df) + geom_boxplot()
 # comparing_features <- c(PCTFLOAN,UG25ABV,FEMALE,FAMINC, MNEARN8, GT25K)
 # df <- data.frame(NAMES, PCTFLOAN,UG25ABV,FEMALE,FAMINC, MNEARN8, GT25K)
 # #row.names(df) <- c("New College","Other Schools")
-# 
-# ggplot(aes(y=boxthis, x=f2, fill=comparing_features), data=df) + geom_boxplot()
-# 
-# barplot(df)
-# ggplot(df)
-# ggplot(df, aes(NAMES, fill=comparing_features))
 ```
