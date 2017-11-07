@@ -20,33 +20,35 @@ outputs.dir <- "Output"
 
 # Read in cleaned csv file
 ```{r}
-cleandata <- read.csv("clean_2013.csv")
-head(cleandata)
+# todo replace with fread
+outcomes2013 <- read.csv("filtered_2013.csv")
+#head(outcomes2013)
 ```
 
 # Find relationship between completion within 4 years at original institution and Gender of student
 ```{r}
-female <- as.numeric(cleandata$FEMALE_COMP_ORIG_YR4_RT)
-male <- as.numeric(cleandata$MALE_COMP_ORIG_YR4_RT)
-newdata <- na.omit(data.frame(female,male))
-plot(newdata$female, newdata$male) 
+library(ggplot2)
+female_complete4yr <- as.numeric(outcomes2013$FEMALE_COMP_ORIG_YR4_RT)
+male_complete4yr <- as.numeric(outcomes2013$MALE_COMP_ORIG_YR4_RT)
+num_completed_by_gender <- na.omit(data.frame(female_complete4yr,male_complete4yr))  # omit rows were either F or M is NA
 
 
+ggplot(num_completed_by_gender)+title("# of graduates, male vs female")+ylab("fanny poops in her hand lol lol")
 
-lm.fit <- lm(newdata$female ~ newdata$male)
+lm.fit <- lm(female_complete4yr ~ male_complete4yr, data = num_completed_by_gender)
 summary(lm.fit)
 plot(lm.fit)
 
 
 
-MEAN <- c(mean(as.numeric(cleandata$MALE_COMP_ORIG_YR4_RT),na.rm=TRUE), mean(as.numeric(cleandata$FEMALE_COMP_ORIG_YR4_RT),na.rm=TRUE)) 
+MEAN <- c(mean(as.numeric(outcomes2013$MALE_COMP_ORIG_YR4_RT),na.rm=TRUE), mean(as.numeric(outcomes2013$FEMALE_COMP_ORIG_YR4_RT),na.rm=TRUE)) 
 
-STD <- c(sd(as.numeric(cleandata$MALE_COMP_ORIG_YR4_RT),na.rm=TRUE), sd(as.numeric(cleandata$FEMALE_COMP_ORIG_YR4_RT),na.rm=TRUE)) 
+STD <- c(sd(as.numeric(outcomes2013$MALE_COMP_ORIG_YR4_RT),na.rm=TRUE), sd(as.numeric(outcomes2013$FEMALE_COMP_ORIG_YR4_RT),na.rm=TRUE)) 
 
-MEDIAN <- c(median(as.numeric(cleandata$MALE_COMP_ORIG_YR4_RT),na.rm=TRUE), median(as.numeric(cleandata$FEMALE_COMP_ORIG_YR4_RT),na.rm=TRUE)) 
+MEDIAN <- c(median(as.numeric(outcomes2013$MALE_COMP_ORIG_YR4_RT),na.rm=TRUE), median(as.numeric(outcomes2013$FEMALE_COMP_ORIG_YR4_RT),na.rm=TRUE)) 
 
 mydata <- data.frame(MEAN, STD, MEDIAN)
-row.names(mydata) <- c("male","female")
+row.names(mydata) <- c("male_complete4yr","female_complete4yr")
 mydata
 
 
@@ -54,21 +56,21 @@ mydata
 
 # Compare ncf and other colleges
 ```{r}
-ncf <- cleandata[cleandata$INSTNM == "New College of Florida",]
+ncf <- outcomes2013[outcomes2013$INSTNM == "New College of Florida",]
 #Percent of all undergraduate students receiving a federal student loan
-PCTFLOAN <- c(ncf$PCTFLOAN, mean(as.numeric(cleandata$PCTFLOAN),na.rm=TRUE)) 
+PCTFLOAN <- c(ncf$PCTFLOAN, mean(as.numeric(outcomes2013$PCTFLOAN),na.rm=TRUE)) 
 #Percentage of undergraduates aged 25 and above
-UG25ABV <- c(ncf$UG25ABV, mean(as.numeric(cleandata$UG25ABV),na.rm=TRUE))
+UG25ABV <- c(ncf$UG25ABV, mean(as.numeric(outcomes2013$UG25ABV),na.rm=TRUE))
 #Share of female students
-FEMALE <- c(ncf$FEMALE, mean(as.numeric(cleandata$FEMALE),na.rm=TRUE))
+FEMALE <- c(ncf$FEMALE, mean(as.numeric(outcomes2013$FEMALE),na.rm=TRUE))
 #Share of married students
-MARRIED <- c(ncf$MARRIED, mean(as.numeric(cleandata$MARRIED),na.rm=TRUE))
+MARRIED <- c(ncf$MARRIED, mean(as.numeric(outcomes2013$MARRIED),na.rm=TRUE))
 #Average family income in real 2015 dollars
-FAMINC <- c(ncf$FAMINC, mean(as.numeric(cleandata$FAMINC),na.rm=TRUE))
+FAMINC <- c(ncf$FAMINC, mean(as.numeric(outcomes2013$FAMINC),na.rm=TRUE))
 #Mean earnings of students working and not enrolled 8 years after entry
-MNEARN8 <- c(ncf$MN_EARN_WNE_P8, mean(as.numeric(cleandata$MN_EARN_WNE_P8),na.rm=TRUE))
+MNEARN8 <- c(ncf$MN_EARN_WNE_P8, mean(as.numeric(outcomes2013$MN_EARN_WNE_P8),na.rm=TRUE))
 #Share of students earning over $25,000/year (threshold earnings) 8 years after entry
-GT25K <- c(ncf$GT_25K_P8, mean(as.numeric(cleandata$GT_25K_P8),na.rm=TRUE))
+GT25K <- c(ncf$GT_25K_P8, mean(as.numeric(outcomes2013$GT_25K_P8),na.rm=TRUE))
 
 
 df <- data.frame(PCTFLOAN,UG25ABV,FEMALE,MARRIED,FAMINC, MNEARN8, GT25K)
