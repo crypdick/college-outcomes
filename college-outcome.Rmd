@@ -1,14 +1,16 @@
 ---
 title: "College Outcomes Analysis"
-author: "Stephaine Rivera, Richard Decal, Fanny Chow, Xiaotai Chai"
+author: "Xiaotai Chai, Fanny Chow, Richard Decal, Stephanie Rivera"
 subtitle: "Data Munging & EDA"
 date: "October 26, 2017"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment = NA, comment="", prompt=FALSE)
 ```
+
+`r knitr::opts_chunk$set(cache=TRUE)`
 
 ## Load libraries  
 ```{r}
