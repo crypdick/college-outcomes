@@ -93,7 +93,7 @@ perc_graduates_earning_grtrthn25k_peryer <- outcomes2013[,c("INSTNM","GT_25K_P8"
 colnames(perc_graduates_earning_grtrthn25k_peryer) <- c("School", "Value")
 perc_graduates_earning_grtrthn25k_peryer <-  as.data.frame(mutate(perc_graduates_earning_grtrthn25k_peryer, Feature="Perc_graduates_earning_grtrthn25k_peryer"))
 
-melted_df <- rbind(female_percent, percent_recv_loans, percnt_older_than_25yr, Avg_fam_income, mean_income_graduates_after_8yr,perc_graduates_earning_grtrthn25k_peryer)
+melted_df <- rbind(female_percent, percent_recv_loans, percnt_older_than_25yr,perc_graduates_earning_grtrthn25k_peryer)# mean_income_graduates_after_8yr, Avg_fam_income
 
 melted_df$School[which(melted_df$School != "New College of Florida")] = "Other schools"
 
