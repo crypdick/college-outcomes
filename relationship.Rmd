@@ -69,56 +69,64 @@ ncf
 ncf <- outcomes2013[outcomes2013$INSTNM == "New College of Florida",]
 
 female_percent <- outcomes2013[,c("INSTNM","FEMALE")]
-female_percent <- mutate(female_percent, Feature="Percnt_female")
+colnames(female_percent) <- c("School", "Value")
+female_percent <- as.data.frame(mutate(female_percent, Feature="Percnt_female"))
 
 percent_recv_loans <- outcomes2013[,c("INSTNM","PCTFLOAN")]
-percent_recv_loans <- mutate(percent_recv_loans, Feature="Percnt_reciv_loan")
+colnames(percent_recv_loans) <- c("School", "Value")
+percent_recv_loans <- as.data.frame(mutate(percent_recv_loans, Feature="Percnt_reciv_loan"))
 
 percnt_older_than_25yr <- outcomes2013[,c("INSTNM","UG25ABV")]
-percnt_older_than_25yr <- mutate(percnt_older_than_25yr, Feature="Percnt_older_than_25yr")
+colnames(percnt_older_than_25yr) <- c("School", "Value")
+percnt_older_than_25yr <- as.data.frame(mutate(percnt_older_than_25yr, Feature="Percnt_older_than_25yr"))
 
 Avg_fam_income <- outcomes2013[, c("INSTNM","FAMINC")]
-Avg_fam_income <- mutate(Avg_fam_income, Feature="Avg_fam_income")
+colnames(Avg_fam_income) <- c("School", "Value")
+Avg_fam_income <- as.data.frame(mutate(Avg_fam_income, Feature="Avg_fam_income"))
 
-mean_income_graduates_after_8yr <- outcomes2013[, c("INSTNM","MNEARN8")]
-mean_income_graduates_after_8yr <- mutate(mean_income_graduates_after_8yr, Feature="Mean_income_graduates_after_8yr")
-
-#Share of students earning over $25,000/year (threshold earnings) 8 years after entry
-perc_graduates_earning_grtrthn25k_peryer <- outcomes2013[,c("INSTNM","GT25K")]
-perc_graduates_earning_grtrthn25k_peryer <-  mutate(perc_graduates_earning_grtrthn25k_peryer, Feature="Perc_graduates_earning_grtrthn25k_peryer")
-
-
-
-sample$INSTNM[which(sample$INSTNM != "New College of Florida")] = "Other schools"
-
-
-#Percent of all undergraduate students receiving a federal student loan
-PCTFLOAN <- c(ncf$PCTFLOAN, mean(as.numeric(outcomes2013$PCTFLOAN),na.rm=TRUE)) 
-
-#Percentage of undergraduates aged 25 and above
-UG25ABV <- c(ncf$UG25ABV, mean(as.numeric(outcomes2013$UG25ABV), na.rm=TRUE))
-
-#Share of female students
-FEMALE <- c(ncf$FEMALE, mean(as.numeric(outcomes2013$FEMALE), na.rm=TRUE))
-
-#Average family income in real 2015 dollars
-FAMINC <- c(ncf$FAMINC, mean(as.numeric(outcomes2013$FAMINC), na.rm=TRUE))
-
-#Mean earnings of students working and not enrolled 8 years after entry
-MNEARN8 <- c(ncf$MN_EARN_WNE_P8, mean(as.numeric(outcomes2013$MN_EARN_WNE_P8), na.rm=TRUE))
+mean_income_graduates_after_8yr <- outcomes2013[, c("INSTNM","MN_EARN_WNE_P8")]
+colnames(mean_income_graduates_after_8yr) <- c("School", "Value")
+mean_income_graduates_after_8yr <- as.data.frame(mutate(mean_income_graduates_after_8yr, Feature="Mean_income_graduates_after_8yr"))
 
 #Share of students earning over $25,000/year (threshold earnings) 8 years after entry
-GT25K <- c(ncf$GT_25K_P8, mean(as.numeric(outcomes2013$GT_25K_P8), na.rm=TRUE))
+perc_graduates_earning_grtrthn25k_peryer <- outcomes2013[,c("INSTNM","GT_25K_P8")]
+colnames(perc_graduates_earning_grtrthn25k_peryer) <- c("School", "Value")
+perc_graduates_earning_grtrthn25k_peryer <-  as.data.frame(mutate(perc_graduates_earning_grtrthn25k_peryer, Feature="Perc_graduates_earning_grtrthn25k_peryer"))
 
-NAMES <- c("New College","Other Schools")
+melted_df <- rbind(female_percent, percent_recv_loans, percnt_older_than_25yr, Avg_fam_income, mean_income_graduates_after_8yr,perc_graduates_earning_grtrthn25k_peryer)
 
-comparing_features <- c(PCTFLOAN,UG25ABV,FEMALE,FAMINC, MNEARN8, GT25K)
-df <- data.frame(NAMES, PCTFLOAN,UG25ABV,FEMALE,FAMINC, MNEARN8, GT25K)
-#row.names(df) <- c("New College","Other Schools")
+melted_df$School[which(melted_df$School != "New College of Florida")] = "Other schools"
 
-ggplot(aes(y=boxthis, x=f2, fill=comparing_features), data=df) + geom_boxplot()
+#melted_df <- as.data.frame(melted_df)
+ggplot(aes(y=Value, x=Feature, fill=School), data=melted_df) + geom_boxplot()
 
-barplot(df)
-ggplot(df)
-ggplot(df, aes(NAMES, fill=comparing_features))
+# #Percent of all undergraduate students receiving a federal student loan
+# PCTFLOAN <- c(ncf$PCTFLOAN, mean(as.numeric(outcomes2013$PCTFLOAN),na.rm=TRUE)) 
+# 
+# #Percentage of undergraduates aged 25 and above
+# UG25ABV <- c(ncf$UG25ABV, mean(as.numeric(outcomes2013$UG25ABV), na.rm=TRUE))
+# 
+# #Share of female students
+# FEMALE <- c(ncf$FEMALE, mean(as.numeric(outcomes2013$FEMALE), na.rm=TRUE))
+# 
+# #Average family income in real 2015 dollars
+# FAMINC <- c(ncf$FAMINC, mean(as.numeric(outcomes2013$FAMINC), na.rm=TRUE))
+# 
+# #Mean earnings of students working and not enrolled 8 years after entry
+# MNEARN8 <- c(ncf$MN_EARN_WNE_P8, mean(as.numeric(outcomes2013$MN_EARN_WNE_P8), na.rm=TRUE))
+# 
+# #Share of students earning over $25,000/year (threshold earnings) 8 years after entry
+# GT25K <- c(ncf$GT_25K_P8, mean(as.numeric(outcomes2013$GT_25K_P8), na.rm=TRUE))
+# 
+# NAMES <- c("New College","Other Schools")
+# 
+# comparing_features <- c(PCTFLOAN,UG25ABV,FEMALE,FAMINC, MNEARN8, GT25K)
+# df <- data.frame(NAMES, PCTFLOAN,UG25ABV,FEMALE,FAMINC, MNEARN8, GT25K)
+# #row.names(df) <- c("New College","Other Schools")
+# 
+# ggplot(aes(y=boxthis, x=f2, fill=comparing_features), data=df) + geom_boxplot()
+# 
+# barplot(df)
+# ggplot(df)
+# ggplot(df, aes(NAMES, fill=comparing_features))
 ```
