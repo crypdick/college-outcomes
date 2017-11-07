@@ -79,7 +79,8 @@ fname_to_dtable <- function(filename){
 
 ## Measuring completeness of each year
 
-Used a heatmap to visualize missing data in 3 random files. 
+In this project, we used a heatmap to visualize missing data in 3 random files. 
+First, we computed a ratio of missing data for every column in the file where a ratio of 1 is a column with all NA's. In the heat map, a column with NA's for every row is represented by the color red. 
 ```{r}
 data_1996 <- fname_to_dtable(file_names[1])
 
