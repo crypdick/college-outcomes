@@ -70,6 +70,36 @@ fname_to_dtable <- function(filename){
 
 ## Measuring completeness of each year
 
+Used a heatmap to visualize missing data in 3 random files. 
+```{r}
+data_1996 <- fname_to_dtable(file_names[1])
+
+data2009 <- fname_to_dtable(file_names[13])
+
+data2015 <- fname_to_dtable(file_names[20])
+
+ratio_missing <- function(frame){
+  ratiomissing <- c()
+  for (i in 1:ncol(frame)){
+  
+  ratiomissing[i] <- sum(is.na(frame[,i]))/length(frame[,i])
+  
+  }
+  return(ratiomissing)
+}
+
+ratio_1996 <- (ratio_missing(data_1996))
+ratio_2009 <- (ratio_missing(data2009))
+ratio_2015 <- (ratio_missing(data2015))
+
+B <- matrix(c(ratio_1996,ratio_2009,ratio_2015), nrow=3,ncol=1777)
+B1 <- t(B)
+colnames(B1) <- c("1996","2009","2015")
+dater <- data.matrix(B1)
+collegedata_heatmap <- heatmap(dater, Rowv=NA, Colv=NA, col = heat.colors(256), scale="column", margins=c(5,10))
+```
+
+
 ```{r}
 calc_perc_goodcols_in_table <- function(dtable){
     na.max <- .2
