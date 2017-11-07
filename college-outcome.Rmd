@@ -165,3 +165,6 @@ d2013 <- filter_NA_cols(d2013)
 ```
 
 # V. Analyzing Variables of Interest  
+
+### Analyzing New College vs Other Schools  
+(see relationship.Rmd)  
