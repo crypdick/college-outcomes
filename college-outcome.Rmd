@@ -1,6 +1,6 @@
 ---
 title: "College Outcomes Analysis"
-author: "Xiaotai Chai, Fanny Chow, Richard Decal, Stephanie Rivera"
+author: "Stephanie Rivera, Xiaotai Chai, Fanny Chow, Richard Decal"
 subtitle: "Data Munging & EDA"
 date: "October 26, 2017"
 output: html_document
@@ -10,7 +10,16 @@ output: html_document
 knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment = NA, comment="", prompt=FALSE)
 ```
 
-`r knitr::opts_chunk$set(cache=TRUE)`
+`r knitr::opts_chunk$set(cache=TRUE)`  
+
+# Introduction  
+With over 1400 four-year institutions in the United States, students consider many factors when deciding where to attend college. The College Scorecard aims to help students, parents, and counselors make an informed choice on college choice. 
+
+
+# Data  
+
+
+
 
 ## Load libraries  
 ```{r}
@@ -149,9 +158,6 @@ d2013 <- filter_NA_cols(d2013)
 ```
 
 ## Clean data & only keep variables of interest 
-
-## YOU CAN FILTER WHATEVER YOU WANT OUT OF THE DATA FRAME BY PUTTING
-YOUR PARAMTERS INTO SELECT   
 
 select(starts_with"blah blah text of innerest")
 
