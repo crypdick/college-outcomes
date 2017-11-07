@@ -2,7 +2,9 @@
 title: "Relationship"
 author: "Xiaotai Chai"
 date: "11/6/2017"
-output: pdf_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -54,17 +56,9 @@ mydata <- data.frame(MEAN, STD, MEDIAN)
 row.names(mydata) <- c("male_complete4yr", "female_complete4yr")
 mydata
 ```
-
-# test verion of what's below
-```{r}
-ncf <- outcomes2013[outcomes2013$INSTNM == "New College of Florida",]
-#ncf
 ```
 
-
-
-
-# Compare ncf and other colleges
+# Comparing NCF to other colleges
 ```{r}
 ncf <- outcomes2013[outcomes2013$INSTNM == "New College of Florida",]
 
@@ -74,6 +68,7 @@ female_percent <- as.data.frame(mutate(female_percent, Feature="Percnt_female"))
 female_percent$School[which(female_percent$School != "New College of Florida")] = "Other schools"
 ggplot(female_percent, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
 ```
+
 New College is on the lower end of percent female.
 
 ```{r}
@@ -83,6 +78,7 @@ percent_recv_loans <- as.data.frame(mutate(percent_recv_loans, Feature="Percnt_r
 percent_recv_loans$School[which(percent_recv_loans$School != "New College of Florida")] = "Other schools"
 ggplot(percent_recv_loans, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
 ```
+
 New College is in the lower tail of recieving loans.
 
 ```{r}
@@ -92,6 +88,7 @@ percnt_older_than_25yr <- as.data.frame(mutate(percnt_older_than_25yr, Feature="
 percnt_older_than_25yr$School[which(percnt_older_than_25yr$School != "New College of Florida")] = "Other schools"
 ggplot(percnt_older_than_25yr, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
 ```
+
 New College had an insignificant number of >25 year olds.
 
 ```{r}
@@ -101,6 +98,7 @@ Avg_fam_income <- as.data.frame(mutate(Avg_fam_income, Feature="Avg_fam_income")
 Avg_fam_income$School[which(Avg_fam_income$School != "New College of Florida")] = "Other schools"
 ggplot(Avg_fam_income, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
 ```
+
 New College kids come from rich families.
 
 
@@ -111,8 +109,8 @@ mean_income_graduates_after_8yr <- as.data.frame(mutate(mean_income_graduates_af
 mean_income_graduates_after_8yr$School[which(mean_income_graduates_after_8yr$School != "New College of Florida")] = "Other schools"
 ggplot(mean_income_graduates_after_8yr, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
 ```
-New College is around the mean income of graduates.
 
+New College is around the mean income of graduates.
 
 ```{r}
 #Share of students earning over $25,000/year (threshold earnings) 8 years after entry
@@ -125,35 +123,62 @@ ggplot(perc_graduates_earning_grtrthn25k_peryer, aes(y=Value, x=Feature, group=S
 
 NCF graduates make a little less than averge than other graduates.
 
+```{r}
+# instructional expenditures
+institutional_expenditures <- outcomes2013[,c("INSTNM","INEXPFTE")]
+colnames(institutional_expenditures) <- c("School", "Value")
+institutional_expenditures <-  as.data.frame(mutate(institutional_expenditures, Feature="institutional_expenditures"))
+institutional_expenditures$School[which(institutional_expenditures$School != "New College of Florida")] = "Other schools"
+ggplot(institutional_expenditures, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
+```
 
-#melted_df <- rbind(female_percent, percent_recv_loans, percnt_older_than_25yr,perc_graduates_earning_grtrthn25k_peryer)# mean_income_graduates_after_8yr, Avg_fam_income
+New College is in the lower tail of institutional expenditure spendings
 
-#melted_df$School[which(melted_df$School != "New College of Florida")] = "Other schools"
 
-#melted_df <- as.data.frame(melted_df)
-#ggplot(melted_df, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
-#ggplot(aes(y=Value, x=Feature, fill=School), data=melted_df) + geom_boxplot()
+```{r}
+# tuition_in_state
+tuition_in_state <- outcomes2013[,c("INSTNM","tuition_in_state")]
+colnames(tuition_in_state) <- c("School", "Value")
+tuition_in_state <-  as.data.frame(mutate(tuition_in_state, Feature="tuition_in_state"))
+tuition_in_state$School[which(tuition_in_state$School != "New College of Florida")] = "Other schools"
+ggplot(tuition_in_state, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
+```
 
-# #Percent of all undergraduate students receiving a federal student loan
-# PCTFLOAN <- c(ncf$PCTFLOAN, mean(as.numeric(outcomes2013$PCTFLOAN),na.rm=TRUE))
-#
-# #Percentage of undergraduates aged 25 and above
-# UG25ABV <- c(ncf$UG25ABV, mean(as.numeric(outcomes2013$UG25ABV), na.rm=TRUE))
-#
-# #Share of female students
-# FEMALE <- c(ncf$FEMALE, mean(as.numeric(outcomes2013$FEMALE), na.rm=TRUE))
-#
-# #Average family income in real 2015 dollars
-# FAMINC <- c(ncf$FAMINC, mean(as.numeric(outcomes2013$FAMINC), na.rm=TRUE))
-#
-# #Mean earnings of students working and not enrolled 8 years after entry
-# MNEARN8 <- c(ncf$MN_EARN_WNE_P8, mean(as.numeric(outcomes2013$MN_EARN_WNE_P8), na.rm=TRUE))
-#
-# #Share of students earning over $25,000/year (threshold earnings) 8 years after entry
-# GT25K <- c(ncf$GT_25K_P8, mean(as.numeric(outcomes2013$GT_25K_P8), na.rm=TRUE))
-#
-# NAMES <- c("New College","Other Schools")
-#
-# comparing_features <- c(PCTFLOAN,UG25ABV,FEMALE,FAMINC, MNEARN8, GT25K)
-# df <- data.frame(NAMES, PCTFLOAN,UG25ABV,FEMALE,FAMINC, MNEARN8, GT25K)
-# #row.names(df) <- c("New College","Other Schools")
+
+```{r}
+# faculty_salary
+faculty_salary <- outcomes2013[,c("INSTNM","faculty_salary")]
+colnames(faculty_salary) <- c("School", "Value")
+faculty_salary <-  as.data.frame(mutate(faculty_salary, Feature="faculty_salary"))
+faculty_salary$School[which(faculty_salary$School != "New College of Florida")] = "Other schools"
+ggplot(faculty_salary, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
+```
+
+
+```{r}
+# 
+institutional_expenditures <- outcomes2013[,c("INSTNM","INEXPFTE")]
+colnames(institutional_expenditures) <- c("School", "Value")
+institutional_expenditures <-  as.data.frame(mutate(institutional_expenditures, Feature="institutional_expenditures"))
+institutional_expenditures$School[which(institutional_expenditures$School != "New College of Florida")] = "Other schools"
+ggplot(institutional_expenditures, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
+```
+
+
+```{r}
+# 
+institutional_expenditures <- outcomes2013[,c("INSTNM","INEXPFTE")]
+colnames(institutional_expenditures) <- c("School", "Value")
+institutional_expenditures <-  as.data.frame(mutate(institutional_expenditures, Feature="institutional_expenditures"))
+institutional_expenditures$School[which(institutional_expenditures$School != "New College of Florida")] = "Other schools"
+ggplot(institutional_expenditures, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
+```
+
+```{r}
+# 
+institutional_expenditures <- outcomes2013[,c("INSTNM","INEXPFTE")]
+colnames(institutional_expenditures) <- c("School", "Value")
+institutional_expenditures <-  as.data.frame(mutate(institutional_expenditures, Feature="institutional_expenditures"))
+institutional_expenditures$School[which(institutional_expenditures$School != "New College of Florida")] = "Other schools"
+ggplot(institutional_expenditures, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
+```
