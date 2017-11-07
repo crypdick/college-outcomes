@@ -9,6 +9,12 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+library(data.table)
+library(ggplot2)
+```
+
+
 # Set working directory  
 ```{r}
 # double check that this puts you in the right dir
@@ -21,25 +27,21 @@ outputs.dir <- "Output"
 # Read in cleaned csv file
 ```{r}
 # todo replace with fread
-outcomes2013 <- read.csv("filtered_2013.csv")
+outcomes2013 <- fread("filtered_2013.csv", na.strings=c("<NA>","PrivacySuppressed"))
 #head(outcomes2013)
 ```
 
 # Find relationship between completion within 4 years at original institution and Gender of student
 ```{r}
-library(ggplot2)
 female_complete4yr <- as.numeric(outcomes2013$FEMALE_COMP_ORIG_YR4_RT)
 male_complete4yr <- as.numeric(outcomes2013$MALE_COMP_ORIG_YR4_RT)
 num_completed_by_gender <- na.omit(data.frame(female_complete4yr,male_complete4yr))  # omit rows were either F or M is NA
 
-
-ggplot(num_completed_by_gender)+title("# of graduates, male vs female")+ylab("fanny poops in her hand lol lol")
+plot(num_completed_by_gender, xlab="# females graduated", ylab="# males graduated")+title("# of graduates, male vs female")
 
 lm.fit <- lm(female_complete4yr ~ male_complete4yr, data = num_completed_by_gender)
 summary(lm.fit)
 plot(lm.fit)
-
-
 
 MEAN <- c(mean(as.numeric(outcomes2013$MALE_COMP_ORIG_YR4_RT),na.rm=TRUE), mean(as.numeric(outcomes2013$FEMALE_COMP_ORIG_YR4_RT),na.rm=TRUE)) 
 
@@ -48,35 +50,50 @@ STD <- c(sd(as.numeric(outcomes2013$MALE_COMP_ORIG_YR4_RT),na.rm=TRUE), sd(as.nu
 MEDIAN <- c(median(as.numeric(outcomes2013$MALE_COMP_ORIG_YR4_RT),na.rm=TRUE), median(as.numeric(outcomes2013$FEMALE_COMP_ORIG_YR4_RT),na.rm=TRUE)) 
 
 mydata <- data.frame(MEAN, STD, MEDIAN)
-row.names(mydata) <- c("male_complete4yr","female_complete4yr")
+row.names(mydata) <- c("male_complete4yr", "female_complete4yr")
 mydata
-
-
 ```
+
+# test verion of what's below
+```{r}
+ncf <- outcomes2013[outcomes2013$INSTNM == "New College of Florida",]
+ncf
+```
+
+
+
 
 # Compare ncf and other colleges
 ```{r}
 ncf <- outcomes2013[outcomes2013$INSTNM == "New College of Florida",]
+
 #Percent of all undergraduate students receiving a federal student loan
 PCTFLOAN <- c(ncf$PCTFLOAN, mean(as.numeric(outcomes2013$PCTFLOAN),na.rm=TRUE)) 
+
 #Percentage of undergraduates aged 25 and above
-UG25ABV <- c(ncf$UG25ABV, mean(as.numeric(outcomes2013$UG25ABV),na.rm=TRUE))
+UG25ABV <- c(ncf$UG25ABV, mean(as.numeric(outcomes2013$UG25ABV), na.rm=TRUE))
+
 #Share of female students
-FEMALE <- c(ncf$FEMALE, mean(as.numeric(outcomes2013$FEMALE),na.rm=TRUE))
-#Share of married students
-MARRIED <- c(ncf$MARRIED, mean(as.numeric(outcomes2013$MARRIED),na.rm=TRUE))
+FEMALE <- c(ncf$FEMALE, mean(as.numeric(outcomes2013$FEMALE), na.rm=TRUE))
+
 #Average family income in real 2015 dollars
-FAMINC <- c(ncf$FAMINC, mean(as.numeric(outcomes2013$FAMINC),na.rm=TRUE))
+FAMINC <- c(ncf$FAMINC, mean(as.numeric(outcomes2013$FAMINC), na.rm=TRUE))
+
 #Mean earnings of students working and not enrolled 8 years after entry
-MNEARN8 <- c(ncf$MN_EARN_WNE_P8, mean(as.numeric(outcomes2013$MN_EARN_WNE_P8),na.rm=TRUE))
+MNEARN8 <- c(ncf$MN_EARN_WNE_P8, mean(as.numeric(outcomes2013$MN_EARN_WNE_P8), na.rm=TRUE))
+
 #Share of students earning over $25,000/year (threshold earnings) 8 years after entry
-GT25K <- c(ncf$GT_25K_P8, mean(as.numeric(outcomes2013$GT_25K_P8),na.rm=TRUE))
+GT25K <- c(ncf$GT_25K_P8, mean(as.numeric(outcomes2013$GT_25K_P8), na.rm=TRUE))
 
+NAMES <- c("New College","Other Schools")
 
-df <- data.frame(PCTFLOAN,UG25ABV,FEMALE,MARRIED,FAMINC, MNEARN8, GT25K)
-row.names(df) <- c("ncf","others")
-df
+comparing_features <- c(PCTFLOAN,UG25ABV,FEMALE,FAMINC, MNEARN8, GT25K)
+df <- data.frame(NAMES, PCTFLOAN,UG25ABV,FEMALE,FAMINC, MNEARN8, GT25K)
+#row.names(df) <- c("New College","Other Schools")
 
+ggplot(aes(y=boxthis, x=f2, fill=comparing_features), data=df) + geom_boxplot()
+
+barplot(df)
+ggplot(df)
+ggplot(df, aes(NAMES, fill=comparing_features))
 ```
-
-
