@@ -92,6 +92,7 @@ ggplot(percnt_older_than_25yr, aes(y=Value, x=Feature, group=School, fill=School
 New College had an insignificant number of >25 year olds.
 
 ```{r}
+# avg family income
 Avg_fam_income <- outcomes2013[, c("INSTNM","FAMINC")]
 colnames(Avg_fam_income) <- c("School", "Value")
 Avg_fam_income <- as.data.frame(mutate(Avg_fam_income, Feature="Avg_fam_income"))
@@ -113,7 +114,7 @@ ggplot(mean_income_graduates_after_8yr, aes(y=Value, x=Feature, group=School, fi
 New College is around the mean income of graduates.
 
 ```{r}
-#Share of students earning over $25,000/year (threshold earnings) 8 years after entry
+# Share of students earning over $25,000/year (threshold earnings) 8 years after entry
 perc_graduates_earning_grtrthn25k_peryer <- outcomes2013[,c("INSTNM","GT_25K_P8")]
 colnames(perc_graduates_earning_grtrthn25k_peryer) <- c("School", "Value")
 perc_graduates_earning_grtrthn25k_peryer <-  as.data.frame(mutate(perc_graduates_earning_grtrthn25k_peryer, Feature="Perc_graduates_earning_grtrthn25k_peryer"))
@@ -147,16 +148,6 @@ About average.
 
 
 ```{r}
-# faculty_salary
-faculty_salary <- outcomes2013[,c("INSTNM","AVGFACSAL")]
-colnames(faculty_salary) <- c("School", "Value")
-faculty_salary <-  as.data.frame(mutate(faculty_salary, Feature="faculty_salary"))
-faculty_salary$School[which(faculty_salary$School != "New College of Florida")] = "Other schools"
-ggplot(faculty_salary, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
-```
-
-
-```{r}
 # The median original amount of the loan principal upon entering repayment
 loan_principal <- outcomes2013[,c("INSTNM","DEBT_MDN")]
 colnames(loan_principal) <- c("School", "Value")
@@ -165,3 +156,15 @@ loan_principal$School[which(loan_principal$School != "New College of Florida")] 
 ggplot(loan_principal, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
 ```
 Way lower loan principal!
+
+
+
+```{r}
+# 
+mid_SAT_math <- outcomes2013[,c("INSTNM","SATMTMID")]
+colnames(mid_SAT_math) <- c("School", "Value")
+mid_SAT_math <-  as.data.frame(mutate(mid_SAT_math, Feature="mid_SAT_math"))
+mid_SAT_math$School[which(mid_SAT_math$School != "New College of Florida")] = "Other schools"
+ggplot(mid_SAT_math, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
+```
+
