@@ -1,6 +1,6 @@
 ---
 title: "College Outcomes Analysis"
-author: "Xiaotai Chai, Fanny Chow, Richard Decal, Stephanie Rivera"
+author: "Stephanie Rivera, Xiaotai Chai, Fanny Chow, Richard Decal"
 subtitle: "Data Munging & EDA"
 date: "October 26, 2017"
 output: html_document
@@ -10,7 +10,16 @@ output: html_document
 knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment = NA, comment="", prompt=FALSE)
 ```
 
-`r knitr::opts_chunk$set(cache=TRUE)`
+`r knitr::opts_chunk$set(cache=TRUE)`  
+
+# Introduction  
+With over 1400 four-year institutions in the United States, students consider many factors when deciding where to attend college. The College Scorecard aims to help students, parents, and counselors make an informed choice on college choice. 
+
+
+# Data  
+
+
+
 
 ## Load libraries  
 ```{r}
@@ -70,7 +79,8 @@ fname_to_dtable <- function(filename){
 
 ## Measuring completeness of each year
 
-Used a heatmap to visualize missing data in 3 random files. 
+In this project, we used a heatmap to visualize missing data in 3 random files. 
+First, we computed a ratio of missing data for every column in the file where a ratio of 1 is a column with all NA's. In the heat map, a column with NA's for every row is represented by the color red. 
 ```{r}
 data_1996 <- fname_to_dtable(file_names[1])
 
@@ -149,9 +159,6 @@ d2013 <- filter_NA_cols(d2013)
 ```
 
 ## Clean data & only keep variables of interest 
-
-## YOU CAN FILTER WHATEVER YOU WANT OUT OF THE DATA FRAME BY PUTTING
-YOUR PARAMTERS INTO SELECT   
 
 select(starts_with"blah blah text of innerest")
 
