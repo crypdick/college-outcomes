@@ -136,18 +136,19 @@ New College is in the lower tail of institutional expenditure spendings
 
 
 ```{r}
-# tuition_in_state
-tuition_in_state <- outcomes2013[,c("INSTNM","tuition_in_state")]
+# Net tuition revenue per full-time equivalent student
+tuition_in_state <- outcomes2013[,c("INSTNM","TUITFTE")]
 colnames(tuition_in_state) <- c("School", "Value")
 tuition_in_state <-  as.data.frame(mutate(tuition_in_state, Feature="tuition_in_state"))
 tuition_in_state$School[which(tuition_in_state$School != "New College of Florida")] = "Other schools"
 ggplot(tuition_in_state, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
 ```
+About average.
 
 
 ```{r}
 # faculty_salary
-faculty_salary <- outcomes2013[,c("INSTNM","faculty_salary")]
+faculty_salary <- outcomes2013[,c("INSTNM","AVGFACSAL")]
 colnames(faculty_salary) <- c("School", "Value")
 faculty_salary <-  as.data.frame(mutate(faculty_salary, Feature="faculty_salary"))
 faculty_salary$School[which(faculty_salary$School != "New College of Florida")] = "Other schools"
@@ -156,29 +157,11 @@ ggplot(faculty_salary, aes(y=Value, x=Feature, group=School, fill=School)) + geo
 
 
 ```{r}
-# 
-institutional_expenditures <- outcomes2013[,c("INSTNM","INEXPFTE")]
-colnames(institutional_expenditures) <- c("School", "Value")
-institutional_expenditures <-  as.data.frame(mutate(institutional_expenditures, Feature="institutional_expenditures"))
-institutional_expenditures$School[which(institutional_expenditures$School != "New College of Florida")] = "Other schools"
-ggplot(institutional_expenditures, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
+# The median original amount of the loan principal upon entering repayment
+loan_principal <- outcomes2013[,c("INSTNM","DEBT_MDN")]
+colnames(loan_principal) <- c("School", "Value")
+loan_principal <-  as.data.frame(mutate(loan_principal, Feature="loan_principal"))
+loan_principal$School[which(loan_principal$School != "New College of Florida")] = "Other schools"
+ggplot(loan_principal, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
 ```
-
-
-```{r}
-# 
-institutional_expenditures <- outcomes2013[,c("INSTNM","INEXPFTE")]
-colnames(institutional_expenditures) <- c("School", "Value")
-institutional_expenditures <-  as.data.frame(mutate(institutional_expenditures, Feature="institutional_expenditures"))
-institutional_expenditures$School[which(institutional_expenditures$School != "New College of Florida")] = "Other schools"
-ggplot(institutional_expenditures, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
-```
-
-```{r}
-# 
-institutional_expenditures <- outcomes2013[,c("INSTNM","INEXPFTE")]
-colnames(institutional_expenditures) <- c("School", "Value")
-institutional_expenditures <-  as.data.frame(mutate(institutional_expenditures, Feature="institutional_expenditures"))
-institutional_expenditures$School[which(institutional_expenditures$School != "New College of Florida")] = "Other schools"
-ggplot(institutional_expenditures, aes(y=Value, x=Feature, group=School, fill=School)) + geom_boxplot(position=position_dodge(1))
-```
+Way lower loan principal!
